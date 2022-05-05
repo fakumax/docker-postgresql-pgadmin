@@ -1,0 +1,12 @@
+220505025910750796,pg_restore: connecting to database for restore
+
+220505025910762843,pg_restore: implied data-only restore
+
+220505025910764374,pg_restore: processing data for table "public.albums"
+
+220505025910767524,pg_restore: processing data for table "public.artista"
+
+220505025910768796,pg_restore: processing data for table "public.usuarios"
+
+220505025910770219,pg_restore: processing data for table "public.direccion"
+
