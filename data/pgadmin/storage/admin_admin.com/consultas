@@ -1,5 +1,0 @@
-SELECT *
-FROM ALBUMS;
-
-select *
-from artista;
