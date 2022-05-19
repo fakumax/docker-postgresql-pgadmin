@@ -126,3 +126,10 @@ SELECT d_nombre FROM artista WHERE MOD(n_oyentes_m,2) = 0;
 update pistas set duracion_seg = duracion_seg +15 
 where número % 2 = 1 
 
+--extras
+insert into direccion values
+(14,62,'qwe',222,'qwe',2,'2014-01-01','2014-01-01','qwe','wara')
+
+select * from direccion
+select * from usuarios
+
