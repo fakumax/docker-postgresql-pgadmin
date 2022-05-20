@@ -72,4 +72,63 @@ EXECUTE PROCEDURE sp_UpdateUserDate()
 UPDATE usuarios SET d_nombre = 'Facundo' WHERE id_usuario=39;
 select * from  usuarios;
 
+--BEFORE UPDATE OR DELETE ROW
+--3)* STORE PROCEDURE *--
+CREATE TABLE usuarios_hist(
+	id_usuarios_hist serial,
+	d_nombre character varying(300) NOT NULL,
+	d_apellido character varying(100) NOT NULL,
+	d_clave character varying(32) NOT NULL,
+	d_correo character varying(100),
+	n_celular character varying(100),
+	d_sitio_web character varying(100),
+	id_compania integer,
+	f_alta date,
+	c_usuario_alta character varying(100),
+	f_actualizac date,
+	c_usuario_act character varying(100),
+	f_operacion date,
+	c_usuario_operacion integer,
+	c_operacion integer,
+PRIMARY KEY (id_usuarios_hist)
+);
+  
+select * from usuarios_hist
+select * from usuarios
+
+CREATE OR REPLACE FUNCTION sp_InsertarRegistro()
+	RETURNS TRIGGER AS $InsertarRegistro$
+DECLARE
+	BEGIN
+		NEW.d_nombre = OLD.d_nombre;
+		NEW.d_apellido = OLD.d_apellido;
+		NEW.d_clave = OLD.d_clave;
+		NEW.d_correo = OLD.d_correo;
+		NEW.n_celular = OLD.n_celular;
+		NEW.d_sitio_web = OLD.d_sitio_web;
+     	NEW.id_compania = OLD.id_compania;
+		NEW.f_alta = OLD.f_alta;
+		NEW.c_usuario_alta = OLD.c_usuario_alta;
+		NEW.f_actualizac = OLD.f_actualizac;
+		NEW.c_usuario_act = OLD.c_usuario_act;
+		NEW.f_operacion = OLD.f_operacion;
+		OLD.c_usuario_operacion = CURRENT_USER;
+		OLD.c_operacion = 'U';
+	RETURN New;
+END
+$InsertarRegistro$ LANGUAGE plpgsql;
+
+--* TRIGGER *--
+CREATE TRIGGER tg_InsertarRegistro
+	BEFORE UPDATE
+	ON usuarios_hist
+	FOR EACH ROW
+EXECUTE PROCEDURE sp_InsertarRegistro()
+
+--UPDATE TEST
+UPDATE usuarios SET d_nombre = 'Facundoss' WHERE id_usuario=71;
+select * from  usuarios;
+select * from  usuarios_hist;
+
+
 
