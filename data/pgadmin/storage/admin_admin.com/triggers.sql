@@ -120,7 +120,7 @@ DECLARE
 			d_correo= OLD.d_correo,
 			n_celular= OLD.n_celular,
 			d_sitio_web= OLD.d_sitio_web,
-			id_compania= OLD.id_compania,
+			id_company= OLD.id_company,
 			f_alta= OLD.f_alta,
 			c_usuario_alta= OLD.c_usuario_alta,
 			f_actualizac= OLD.f_actualizac,
@@ -145,16 +145,34 @@ CREATE TRIGGER tg_InsertarRegistro
 EXECUTE PROCEDURE sp_UpdateDelete()
 
 --UPDATE TEST
-UPDATE usuarios SET d_nombre = 'daniel' WHERE id_usuario=65;
+UPDATE usuarios SET d_nombre = 'daniele' WHERE id_usuario=65;
+
+UPDATE usuarios 
+SET d_nombre = 'Fq',
+	d_apellido='Ver',
+	d_clave='1111',
+	d_correo='qfaku@gmail.com',
+	n_celular= '2376477777'
+WHERE id_usuario=65;
+
 UPDATE usuarios_hist SET f_operacion = '2020-01-01' WHERE id_usuarios_hist=2;
 
 DELETE from usuarios_hist  WHERE id_usuarios_hist=1;
 select * from  usuarios;
 select * from  usuarios_hist;
 
-INSERT INTO usuarios 
-			(id_usuario, d_nombre,d_apellido,d_clave,d_correo,
-			 n_celular,d_sitio_web,id_company,f_alta,c_usuario_alta,
-			 f_actualizac,c_usuario_act) values(65,'wara','wara','wara','wara',32,'wara',
-												2,'2021-01-01','fakumax','2023-01-01','algo')
+INSERT INTO usuarios (
+	id_usuario, 
+	d_nombre,
+	d_apellido,
+	d_clave,
+	d_correo,
+	n_celular,
+	d_sitio_web,
+	id_company,
+	f_alta,
+	c_usuario_alta,
+	f_actualizac,
+	c_usuario_act)
+	values(65,'wara','wara','wara','wara',32,'wara',2,'2021-01-01','fakumax','2023-01-01','algo')
 
