@@ -114,6 +114,17 @@ DECLARE
 			VALUES (OLD.*,now(),CURRENT_USER,'U')
 			ON CONFLICT (id_usuarios_hist) DO UPDATE SET 
 			id_usuarios_hist = EXCLUDED.id_usuarios_hist,
+			d_nombre= OLD.d_nombre,
+			d_apellido= OLD.d_apellido,
+			d_clave= OLD.d_clave,
+			d_correo= OLD.d_correo,
+			n_celular= OLD.n_celular,
+			d_sitio_web= OLD.d_sitio_web,
+			id_compania= OLD.id_compania,
+			f_alta= OLD.f_alta,
+			c_usuario_alta= OLD.c_usuario_alta,
+			f_actualizac= OLD.f_actualizac,
+			c_usuario_act= OLD.c_usuario_act,
 			f_operacion=now(),
 			c_usuario_operacion=CURRENT_USER,
 			c_operacion='U'
@@ -134,12 +145,16 @@ CREATE TRIGGER tg_InsertarRegistro
 EXECUTE PROCEDURE sp_UpdateDelete()
 
 --UPDATE TEST
-UPDATE usuarios SET d_nombre = 'Facusrrr' WHERE id_usuario=1;
+UPDATE usuarios SET d_nombre = 'daniel' WHERE id_usuario=65;
 UPDATE usuarios_hist SET f_operacion = '2020-01-01' WHERE id_usuarios_hist=2;
 
 DELETE from usuarios_hist  WHERE id_usuarios_hist=1;
 select * from  usuarios;
 select * from  usuarios_hist;
 
-
+INSERT INTO usuarios 
+			(id_usuario, d_nombre,d_apellido,d_clave,d_correo,
+			 n_celular,d_sitio_web,id_company,f_alta,c_usuario_alta,
+			 f_actualizac,c_usuario_act) values(65,'wara','wara','wara','wara',32,'wara',
+												2,'2021-01-01','fakumax','2023-01-01','algo')
 
