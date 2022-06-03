@@ -82,6 +82,7 @@ select * from  usuarios;
 --3)* STORE PROCEDURE *--
 CREATE TABLE usuarios_hist(
 	id_usuarios_hist serial,
+	id_usuario integer,
 	d_nombre character varying(300) NOT NULL,
 	d_apellido character varying(100) NOT NULL,
 	d_clave character varying(32) NOT NULL,
@@ -105,51 +106,18 @@ DECLARE
 	BEGIN
 		IF (TG_OP = 'DELETE') THEN
             INSERT INTO usuarios_hist 
-			(id_usuarios_hist, d_nombre,d_apellido,d_clave,d_correo,
+			(id_usuario, d_nombre,d_apellido,d_clave,d_correo,
 			 n_celular,d_sitio_web,id_company,f_alta,c_usuario_alta,
 			 f_actualizac,c_usuario_act,f_operacion,c_usuario_operacion,c_operacion)
-			VALUES (OLD.*,now(),CURRENT_USER,'D')
-			ON CONFLICT (id_usuarios_hist) DO UPDATE SET 
-			id_usuarios_hist = EXCLUDED.id_usuarios_hist,
-			d_nombre= OLD.d_nombre,
-			d_apellido= OLD.d_apellido,
-			d_clave= OLD.d_clave,
-			d_correo= OLD.d_correo,
-			n_celular= OLD.n_celular,
-			d_sitio_web= OLD.d_sitio_web,
-			id_company= OLD.id_company,
-			f_alta= OLD.f_alta,
-			c_usuario_alta= OLD.c_usuario_alta,
-			f_actualizac= OLD.f_actualizac,
-			c_usuario_act= OLD.c_usuario_act,
-			f_operacion=now(),
-			c_usuario_operacion=CURRENT_USER,
-			c_operacion='D'
-			;
-		    --DELETE from usuarios  WHERE id_usuario=OLD.id_usuario;
+			VALUES (OLD.*,now(),CURRENT_USER,'D');
+			RETURN OLD;   
         ELSIF (TG_OP = 'UPDATE') THEN
 			INSERT INTO usuarios_hist 
-			(id_usuarios_hist, d_nombre,d_apellido,d_clave,d_correo,
+			(id_usuario, d_nombre,d_apellido,d_clave,d_correo,
 			 n_celular,d_sitio_web,id_company,f_alta,c_usuario_alta,
 			 f_actualizac,c_usuario_act,f_operacion,c_usuario_operacion,c_operacion)
-			VALUES (OLD.*,now(),CURRENT_USER,'U')
-			ON CONFLICT (id_usuarios_hist) DO UPDATE SET 
-			id_usuarios_hist = EXCLUDED.id_usuarios_hist,
-			d_nombre= OLD.d_nombre,
-			d_apellido= OLD.d_apellido,
-			d_clave= OLD.d_clave,
-			d_correo= OLD.d_correo,
-			n_celular= OLD.n_celular,
-			d_sitio_web= OLD.d_sitio_web,
-			id_company= OLD.id_company,
-			f_alta= OLD.f_alta,
-			c_usuario_alta= OLD.c_usuario_alta,
-			f_actualizac= OLD.f_actualizac,
-			c_usuario_act= OLD.c_usuario_act,
-			f_operacion=now(),
-			c_usuario_operacion=CURRENT_USER,
-			c_operacion='U'
-			;
+			VALUES (OLD.*,now(),CURRENT_USER,'U');
+			RETURN NEW;
 	    END IF;
 	RETURN NEW;
 END
@@ -165,9 +133,13 @@ CREATE TRIGGER tg_InsertarRegistro
 	FOR EACH ROW
 EXECUTE PROCEDURE sp_UpdateDelete()
 
---UPDATE TEST
-UPDATE usuarios SET d_nombre = 'daniele' WHERE id_usuario=65;
+--MUESTRA TABLAS
 
+select * from  usuarios;
+select * from  usuarios_hist;
+
+--UPDATE TEST
+UPDATE usuarios SET d_nombre = 'facundo' WHERE id_usuario=62;
 UPDATE usuarios 
 SET d_nombre = 'aaaaaaa',
 	d_apellido='aaaa',
@@ -179,21 +151,6 @@ WHERE id_usuario=62;
 UPDATE usuarios_hist SET f_operacion = '2020-01-01' WHERE id_usuarios_hist=2;
 
 DELETE from usuarios  WHERE id_usuario=62;
-select * from  usuarios;
-select * from  usuarios_hist;
 
-INSERT INTO usuarios (
-	id_usuario, 
-	d_nombre,
-	d_apellido,
-	d_clave,
-	d_correo,
-	n_celular,
-	d_sitio_web,
-	id_company,
-	f_alta,
-	c_usuario_alta,
-	f_actualizac,
-	c_usuario_act)
-	values(65,'wara','wara','wara','wara',32,'wara',2,'2021-01-01','fakumax','2023-01-01','algo')
+
 
